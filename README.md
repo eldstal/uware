@@ -6,7 +6,7 @@ Each game is its own program, which is invoked by the launcher and runs until te
 
 
 # Configuration
-Add game repositories to repos.json, formatted like this:
+Add game repositories to `repos.json`, formatted like this:
 ```json
 {
    "Jen" : "http://github.com/jen/uware-games",
@@ -53,7 +53,7 @@ The optional `metadata.json` file may contain information about the game, as dis
 ```
 
 ## Game configuration
-`game.conf` in the launcher root should have the following format, and will be passed to all games
+`game_config.json` in the launcher root should have the following format, and will be passed to all games
 for a more unified experience:
 
 ```json
@@ -123,7 +123,7 @@ Some copy-and-paste input mappers for various languages will be available in `ut
 
 ## Game execution
 The `run` program in your game directory is invoked in the game directory by the launcher.
-The command line contains exactly one argument, the path to the launcher's `game.conf` with settings
+The command line contains exactly one argument, the path to the launcher's `game_config.json` with settings
 the game should respect (if applicable).
 
 ## Game completion
