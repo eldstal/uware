@@ -1,0 +1,53 @@
+{
+   "player1-color": "#ce3910",
+   "player2-color": "#efef32",
+
+   "controller1": {
+      "device": "/dev/js0",
+
+      "axis-X1": "ax1",
+      "axis-Y1": "ax2",
+      "axis-X2": "ax5",
+      "axis-Y2": "ax6",
+
+      "button-Y": "b4",
+      "button-X": "b1",
+      "button-B": "b3",
+      "button-A": "b2",
+
+      "dpad-up": "pov-up",
+      "dpad-down": "pov-down",
+      "dpad-left": "pov-left",
+      "dpad-right": "pov-right",
+
+      "bumper-L": "b5",
+      "bumper-R": "b7",
+      "trigger-L": "b7",
+      "trigger-R": "b8",
+
+      "L3": "b11",
+      "R3": "b12"
+   },
+
+   "controller2": {
+      "device": "keyboard",
+
+      "button-Y": "i",
+      "button-X": "j",
+      "button-B": "l",
+      "button-A": "k",
+
+      "dpad-up": "w",
+      "dpad-down": "s",
+      "dpad-left": "a",
+      "dpad-right": "d",
+
+      "bumper-L": "q",
+      "bumper-R": "e",
+      "trigger-L": "1",
+      "trigger-R": "3",
+
+      "L3": "z",
+      "R3": "x"
+   }
+}
