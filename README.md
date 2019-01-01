@@ -1,5 +1,5 @@
 # uWare
-uWare, a launcher for super-short microgames.
+uWare, an automatic launcher for super-short micro party-games.
 Games are designed for two players and rounds of about 60 seconds or so.
 Typically, the game starts with a single screen of introduction to the rules and controls.
 Each game is its own program, which is invoked by the launcher and runs until termination.
@@ -38,12 +38,12 @@ or whatever other support stuff you need.)
 A game directory is any directory in the root which, after `build` has been run, contains the following:
 * An executable file called `run`
 
-Optionally, the directory may contain:
+
+## Game metadata
+Optionally, a game directory may contain:
 * `icon.png`, a square icon that is displayed in the game list
 * `metadata.json`, as formatted below
 
-
-## Game metadata
 The optional `metadata.json` file may contain information about the game, as displayed in the launcher.
 ```json
 {
