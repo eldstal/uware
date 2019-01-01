@@ -1,4 +1,4 @@
-# uware
+# uWare
 uWare, a launcher for super-short microgames.
 Games are designed for two players and rounds of about 60 seconds or so.
 Typically, the game starts with a single screen of introduction to the rules and controls.
