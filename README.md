@@ -6,11 +6,18 @@ Each game is its own program, which is invoked by the launcher and runs until te
 
 
 # Configuration
-Add game repositories to `repos.json`, formatted like this:
+Add game repositories to `sources.json`, formatted like this:
 ```json
 {
-   "Jen" : "http://github.com/jen/uware-games",
-   "Mike" : "http://github.com/mike/tinygames"
+  "repos": {
+     "Jen" : "http://github.com/jen/uware-games",
+     "Mike" : "http://github.com/mike/tinygames"
+  },
+
+  "blacklist": [
+    "example",
+    "Jen/test_"
+  ]
 }
 ```
 
@@ -24,6 +31,12 @@ The launcher will not remove repositories when they are removed from the configu
 file, because recursive deletion of directories is too scary. It won't load games
 from them, though. If you want to replace a repository and keep the same name,
 you have to manually delete it under `repos/`
+
+`blacklist` is a set of strings that are used to exclude games from the active
+playlist. It is matched against the repository name and game directory, and doesn't
+need to match the complete name. For example, the blacklist string `"test"` will
+cause games like `Mike/test_game` from being loaded.
+
 
 ## Game repository
 A game repository is a git repository and contains two things:

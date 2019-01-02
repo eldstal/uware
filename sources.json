@@ -1,3 +1,9 @@
 {
+  "repos": {
    "eldstal": "https://github.com/eldstal/uware-games"
+  },
+
+  "blacklist": [
+    "exampl_e"
+  ]
 }
