@@ -20,6 +20,10 @@ Push a game to your repository and it will be entered into rotation automaticall
 It should go without saying that you shouldn't add the repositories of people you
 do not trust, since this gives them access to automatically run code on your system.
 
+The launcher will not remove repositories when they are removed from the configuration
+file, because recursive deletion of directories is too scary. It won't load games
+from them, though. If you want to replace a repository and keep the same name,
+you have to manually delete it under `repos/`
 
 ## Game repository
 A game repository is a git repository and contains two things:
