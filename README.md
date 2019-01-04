@@ -124,8 +124,12 @@ for a more unified experience:
       "trigger-R": "3",
       
       "L3": "z",
-      "R3": "x"
+      "R3": "x",
    },
+
+	"console": {
+		"quit": "t"
+	}
 }
 ```
 
@@ -137,6 +141,9 @@ Button names follow the xbox order, i.e.
 ```
 
 Some copy-and-paste input mappers for various languages will be available in `utils/`.
+Note that "keyboard" has no analog axes, It's only really useful for debugging.
+Don't worry about supporting "keyboard" controllers without analog axes in your games.
+The "console" is a set of keymappings for administration.
 
 ## Game execution
 The `run` program in your game directory is invoked in the game directory by the launcher.

@@ -1,6 +1,8 @@
 import json
 import sys
+
 from paths import *
+from logging import LOG
 
 def load_source_conf():
   try:
@@ -8,11 +10,11 @@ def load_source_conf():
     sources = json.load(j)
 
     if "repos" not in sources:
-      sys.stderr.write("No repos specified in {}\n".format(SRC_CONF))
+      LOG.write("No repos specified in {}\n".format(SRC_CONF))
       return None
 
     if not isinstance(sources["repos"], dict):
-      sys.stderr.write("repos not in dict format in {}\n".format(SRC_CONF))
+      LOG.write("repos not in dict format in {}\n".format(SRC_CONF))
       return None
 
     if "blacklist" not in sources:
@@ -21,8 +23,8 @@ def load_source_conf():
     return sources
 
   except Exception as e:
-    sys.stderr.write("Unable to load {}.\n".format(SRC_CONF))
-    sys.stderr.write("{}\n".format(e.msg))
+    LOG.write("Unable to load {}.\n".format(SRC_CONF))
+    LOG.write("{}\n".format(e.msg))
     return None
 
 def _dict_has_string(d, s):
@@ -31,6 +33,23 @@ def _dict_has_string(d, s):
   if not isinstance(d[s], str):
     return False, "{} not a string",format(s)
   return True,""
+
+def _check_console_conf(conf, key):
+  if key not in conf:
+    return False, "{} controller configuration missing".format(key)
+
+  if not isinstance(conf[key], dict):
+    return False, "{} is not a dictionary of controls".format(key)
+
+  expected_strings = [ "quit" ]
+
+  for s in expected_strings:
+    ok,msg = _dict_has_string(conf[key], s)
+    if not ok:
+      return False,msg
+
+  return True,""
+
 
 def _check_controller_conf(conf, key):
   if key not in conf:
@@ -91,19 +110,24 @@ def load_game_conf():
     for k in [ "player1-color", "player2-color" ]:
       ok,msg = _dict_has_string(conf, k)
       if not ok:
-        sys.stderr.write("{} \n".format(msg))
+        LOG.write("{} \n".format(msg))
         return None
 
     for k in [ "controller1", "controller2" ]:
       ok,msg = _check_controller_conf(conf, k)
       if not ok:
-        sys.stderr.write("{} not configured: {}\n".format(k, msg))
+        LOG.write("{} not configured: {}\n".format(k, msg))
         return None
+
+    ok,msg = _check_console_conf(conf, "console")
+    if not ok:
+      LOG.write("console not configured: {}\n".format(msg))
+      return None
 
     return conf
 
   except json.JSONDecodeError as e:
-    sys.stderr.write("Unable to load {}\n".format(GAME_CONF))
-    sys.stderr.write("{}\n".format(e.msg))
+    LOG.write("Unable to load {}\n".format(GAME_CONF))
+    LOG.write("{}\n".format(e.msg))
     return None
 

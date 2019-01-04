@@ -1,6 +1,7 @@
 import os
 import sys
 import re
+import json
 import subprocess
 
 from paths import *
@@ -42,10 +43,10 @@ def _game_directory_info(repo_name, game_dir_name):
       with open(meta_file) as m:
         j = json.load(m)
         for field in [ "author", "title" ]:
-          if field in m:
+          if field in j:
             game[field] = j[field]
   except json.JSONDecodeError as e:
-    system.stderr.write("Unable to load game metadata for {}: {}".format(game["tag"], e.msg))
+    LOG.write("Unable to load game metadata for {}: {}\n".format(game["tag"], e.msg))
 
   return game
 
@@ -58,7 +59,7 @@ def _repo_revision(repo_name):
     return out.decode("ascii").split("\n")[0]
 
   except CalledProcessError as e:
-    sys.stderr.write("Not a git repo: {}".format(repo_dir))
+    LOG.write("Not a git repo: {}".format(repo_dir))
     return None
 
 def _repo_remote(repo_name):
@@ -69,7 +70,7 @@ def _repo_remote(repo_name):
     return out.decode("ascii").split("\n")[0]
 
   except CalledProcessError as e:
-    sys.stderr.write("Not a git repo: {}".format(repo_dir))
+    LOG.write("Not a git repo: {}".format(repo_dir))
     return None
 
 # If a repo exists and the remote URL matches, return True
@@ -104,16 +105,16 @@ def repo_refresh(repo_name, url):
       needs_build = True
   else:
     subprocess.call(["git", "clone", url, repo_name] , cwd=REPOS)
-    sys.stderr.write("Initial checkout of repo {}.\n".format(repo_name))
+    LOG.write("Initial checkout of repo {}.\n".format(repo_name))
     needs_build = True
 
   if (needs_build):
     script = os.path.join(repo_dir, "build")
     if (os.access(script, os.X_OK)):
       if (subprocess.call(script, cwd=repo_dir) != 0):
-        sys.stderr.write("Build failed for repo {}. Continuing anyway.\n".format(repo_name))
+        LOG.write("Build failed for repo {}. Continuing anyway.\n".format(repo_name))
     else:
-      sys.stderr.write("No build script in repo {}. No problem, probably.\n".format(repo_name))
+      LOG.write("No build script in repo {}. No problem, probably.\n".format(repo_name))
 
 
   repo_root = os.path.join(REPOS, repo_name)
@@ -126,7 +127,7 @@ def repo_refresh(repo_name, url):
   return games_list
 
 def _cleanup_name(name):
-  return re.sub('[./$&;]', '', name)
+  return re.sub('[^A-Za-z0-9_-]', '', name)
 
 def _is_blacklisted(game, blacklist):
   for blk in blacklist:
@@ -156,7 +157,7 @@ def reload(sources):
     repo_name = _cleanup_name(repo_name)
 
     if not isinstance(url, str):
-      sys.stderr.write("Configured repo {} does not have a URL. Skipping.\n".format(repo_name))
+      LOG.write("Configured repo {} does not have a URL. Skipping.\n".format(repo_name))
       continue
 
     games_list += repo_refresh(repo_name, url)

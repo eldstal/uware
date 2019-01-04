@@ -4,6 +4,10 @@ import sys
 
 import games_list
 import config
+import inputs
+import ui_curses
+import launch
+from logging import LOG
 
 # Load and check the input configuration
 game_conf = config.load_game_conf()
@@ -14,6 +18,30 @@ sources = config.load_source_conf()
 if sources is None:
   sys.exit(1)
 
-games = games_list.reload(sources)
 
-print(games)
+ui = ui_curses.UICurses()
+
+inputs.setup(ui, ui, game_conf)
+
+
+
+while True:
+  LOG.write("Updating games...\n")
+  games = games_list.reload(sources)
+  LOG.write("Update complete.\n")
+
+  ui.start_ui()
+  inputs.start()
+  next_game = ui.select_game(games)
+  inputs.stop()
+  ui.stop_ui()
+
+  if next_game is None:
+    break
+
+  result = launch.launch(next_game)
+  ui.round_results(result)
+
+ui.shutdown_ui()
+inputs.shutdown()
+
